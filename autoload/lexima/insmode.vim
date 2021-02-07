@@ -28,10 +28,11 @@ endfunction
 function! lexima#insmode#get_map_rules(char) abort
   let char = lexima#string#to_upper_specialkey(a:char)
   if has_key(s:map_dict, char)
-    if &filetype == '' || !s:L.has(keys(s:map_dict[char].rules), &filetype)
+    let filetype = lexima#filetype#detect()
+    if filetype == '' || !s:L.has(keys(s:map_dict[char].rules), filetype)
       return s:map_dict[char].rules['_'].as_list()
     else
-      return s:map_dict[char].rules[&filetype].as_list() +
+      return s:map_dict[char].rules[filetype].as_list() +
       \ s:map_dict[char].rules['_'].as_list()
     endif
   else
